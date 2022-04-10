@@ -1,0 +1,14 @@
+body {
+    background: rgb(255, 255, 255);
+}
+
+h1 {
+    color: rgb(0, 0, 0);
+    font-size: 3rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#demo {
+    font-size: 1rem;
+    color: gray;
+}

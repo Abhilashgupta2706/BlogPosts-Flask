@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block TITLE %} Add User {% endblock TITLE %}
+
+{% block content %}
+
+<!-- Flash Message -->
+{% for message in get_flashed_messages() %}
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    Hey {{name}} - {{message}}.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+{% endfor %}
+<!-- /Flash Message -->
+
+{% if name %}
+
+<h1 class="my-3">Hello World...!</h1>
+
+<table class="table table-light table-striped table-hover my-5">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in our_users %}
+        <tr>
+            <th scope="row">{{user.id}}</th>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+
+<h1 class="my-4">User List:</h1>
+
+<div class="shadow p-3 mb-5 bg-body rounded">
+    <form class="my-4" method="POST">
+
+        {{form.hidden_tag()}}
+
+        {{form.name.label(for="exampleInputEmail1")}}
+        {{form.name(class="form-control")}}
+        <br />
+        {{form.email.label(for="exampleInputEmail1")}}
+        {{form.email(class="form-control")}}
+        <br />
+        {{form.submit(class="btn btn-secondary")}}
+
+    </form>
+</div>
+
+<table class="table table-light table-striped table-hover my-5">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in our_users %}
+        <tr>
+            <th scope="row">{{user.id}}</th>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endif %}
+
+{% endblock content %}

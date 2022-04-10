@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block TITLE %} Name {% endblock TITLE %}
+
+{% block content %}
+
+<!-- Flash Message -->
+{% for message in get_flashed_messages() %}
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    Hey {{name}} your {{message}}.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+{% endfor %}
+<!-- /Flash Message -->
+
+{% if name %}
+
+<h1 class="my-3">Hello {{name}}</h1>
+<div class="text-center">
+    <img class="rounded" src="{{ url_for('static', filename='images/dragonfly-s.jpg') }}" alt="Butterfly">
+</div>
+<br />
+<p id="demo">This is demo text.</p>
+
+{% else %}
+
+<h1 class="my-3">What's your name?</h1>
+
+<form method="POST">
+
+    {{form.hidden_tag()}}
+
+    {{form.name.label(for="exampleInputEmail1")}}
+    {{form.name(class="form-control")}}
+    <br />
+    {{form.submit(class="btn btn-secondary")}}
+
+</form>
+
+{% endif %}
+
+{% endblock content %}
