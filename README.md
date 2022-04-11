@@ -1,4 +1,4 @@
-# BlogWebsite-Flask
+# BlogPosts-Flask
 
 ### How to use
 [Click here](https://usersblogposts-flask.herokuapp.com/) to use this app 😉
