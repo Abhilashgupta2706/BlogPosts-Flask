@@ -120,27 +120,34 @@ def dashboard():
         name_to_update.username = request.form['username']
         name_to_update.favorite_color = request.form['favorite_color']
         name_to_update.about_user = request.form['about_user']
-        name_to_update.user_profile_pic = request.files['user_profile_pic']
 
-        profile_pic_filename = secure_filename(
-            name_to_update.user_profile_pic.filename)
-        generate_profile_pic_name = str(
-            uuid.uuid1()) + "_" + profile_pic_filename
+        if request.files['user_profile_pic']:
+            name_to_update.user_profile_pic = request.files['user_profile_pic']
 
-        saver = request.files['user_profile_pic']
+            profile_pic_filename = secure_filename(
+                name_to_update.user_profile_pic.filename)
+            generate_profile_pic_name = str(
+                uuid.uuid1()) + "_" + profile_pic_filename
 
-        saver.save(os.path.join(app.config["UPLOAD_FOLDER"], generate_profile_pic_name))
+            saver = request.files['user_profile_pic']
 
-        name_to_update.user_profile_pic = generate_profile_pic_name
+            saver.save(os.path.join(
+                app.config["UPLOAD_FOLDER"], generate_profile_pic_name))
 
-        try:
+            name_to_update.user_profile_pic = generate_profile_pic_name
+
+            try:
+                db.session.commit()
+
+                flash("User updated successfully.")
+                return render_template('dashboard.html', form=form, name_to_update=name_to_update, id=id)
+
+            except:
+                flash("Error! Try Again...")
+                return render_template('dashboard.html', form=form, name_to_update=name_to_update, id=id)
+        else:
             db.session.commit()
-
             flash("User updated successfully.")
-            return render_template('dashboard.html', form=form, name_to_update=name_to_update, id=id)
-
-        except:
-            flash("Error! Try Again...")
             return render_template('dashboard.html', form=form, name_to_update=name_to_update, id=id)
 
     else:
@@ -202,7 +209,6 @@ def delete_user(id):
     if id == current_user.id:
         user_to_delete = Users.query.get_or_404(id)
 
-
         try:
             db.session.delete(user_to_delete)
             db.session.commit()
@@ -220,6 +226,7 @@ def delete_user(id):
     else:
         flash("Access Denied! Cannot delete other User's Profile")
         return redirect(url_for('dashboard'))
+
 
 @app.route('/blog-posts')
 def blog_posts():
@@ -275,7 +282,7 @@ def blog_post_update(id):
         flash("Blog has been updated.")
         return redirect(url_for('blog_posts_id', id=post_to_update.id))
 
-    if current_user.id == post_to_update.poster_id:
+    if current_user.id == post_to_update.poster_id or current_user.id  == 1:
 
         form.title.data = post_to_update.title
         # form.author.data = post_to_update.author
@@ -296,7 +303,7 @@ def delete_bog_post(id):
 
     id = current_user.id
 
-    if id == post_to_delete.poster.id:
+    if id == post_to_delete.poster.id or id == 1:
         try:
             db.session.delete(post_to_delete)
             db.session.commit()
@@ -328,33 +335,6 @@ def name():
         flash("Form submitted successfully.")
 
     return render_template('name.html', name=name, form=form)
-
-
-@app.route('/test-pw', methods=["GET", "POST"])
-@login_required
-def test_pw():
-    email = None
-    password = None
-    pw_to_check = None
-    passed = None
-
-    form = PasswordForm()
-
-    # Validation
-    if form.validate_on_submit():
-        email, password = form.email.data, form.password_hash.data
-        form.email.data, form.password_hash.data = '', ''
-
-        pw_to_check = Users.query.filter_by(email=email).first()
-
-        passed = check_password_hash(pw_to_check.password_hash, password)
-
-    return render_template('test_pw.html', email=email, password=password, pw_to_check=pw_to_check, passed=passed, form=form)
-
-
-@app.route('/user/<name>')
-def user(name):
-    return render_template('user.html', user_name=name)
 
 
 @app.errorhandler(404)

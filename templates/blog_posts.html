@@ -17,7 +17,7 @@
                         <h5 class="card-title"><i><small>By: {{post.poster.name}}</small></i></h5>
                         <p class="card-text">{{post.content|safe}}</p>
 
-                        {% if post.poster_id == current_user.id %}
+                        {% if post.poster_id == current_user.id or current_user.id == 1 %}
                         <a href="/blog-posts/{{post.id}}" class="btn btn-outline-success btn-sm">View Post</a>
                         <a href="/blog_posts/delete/{{post.id}}" class="btn btn-outline-danger btn-sm">Delete</a>
                         {% else %}

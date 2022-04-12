@@ -30,8 +30,19 @@
                     </div>
 
                     <div class="col-4">
+
+                        {% if current_user.user_profile_pic %}
+
+                        <img src="{{ url_for('static', filename='images/' + current_user.user_profile_pic) }}"
+                            alt="Propic" width="250px" height="250px" align="right" style="object-fit: cover;">
+
+                        {% else %}
+
                         <img src="{{ url_for('static', filename='images/default_profile_pic.png') }}" alt="Propic"
                             width="200px" align="right">
+
+                        {% endif %}
+
                     </div>
 
                 </div>
