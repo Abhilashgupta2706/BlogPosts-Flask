@@ -8,21 +8,58 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
+            {% if current_user.is_authenticated %}
+
             <li class="nav-item">
                 <a class="nav-link" href="{{url_for('user', name = 'john')}}">User Profile</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="/user/dashboard">Dashboard</a>
+            </li>
+            {% if current_user.id == 1 %}
+                
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('admin')}}">Admin</a>
+            </li>
+
+            {% endif %}
+            <li class="nav-item">
+                <a class="nav-link" href="/test-pw">Test_PW</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/logout">Logout</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/add-posts">Add Post</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/blog-posts">Blogs</a>
+            </li>
+
+            {% else %}
+
+            <li class="nav-item">
                 <a class="nav-link" href="/name">Name</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/user/add">Add user</a>
+                <a class="nav-link" href="/user/add">Add User</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/user/login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/blog-posts">Blogs</a>
+            </li>
+
+            {% endif %}
+
 
 
 
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="form-inline my-2 my-lg-0" method="POST" action="{{url_for('search')}}">
+            {{ form.hidden_tag() }}
+            <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>

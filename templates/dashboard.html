@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block TITLE %} Dashboard {% endblock TITLE %}
+
+{% block content %}
+
+<div class="container ">
+    <h1 class="my-3">Dashboard</h1>
+
+    <div class="card">
+        <h4 class="card-header">Welcome to dashboard</h4>
+        <div class="card-body">
+
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-8">
+                        <h5 class="card-title">{{current_user.name|title}}</h5>
+                        <p class="card-text"><strong>Username</strong> - {{ current_user.username }}</p>
+                        <p class="card-text"><strong>Email</strong> - {{ current_user.email }}</p>
+                        <p class="card-text"><strong>Favorite Color</strong> - {{ current_user.favorite_color }}</p>
+                        <p class="card-text"><strong>About</strong> - {{ current_user.about_user }}</p>
+                        <p class="card-text"><strong>Profile Pic</strong> - {{ current_user.user_profile_pic }}</p>
+                        <p class="card-text"><strong>ID</strong> - {{ current_user.id }}</p>
+                        <a href="/user/logout"><button type="button"
+                                class="btn my-3 btn-outline-secondary btn-sm">Logout</button></a>
+                        <a href="/update/{{current_user.id}}"><button type="button"
+                                class="btn my-3 btn-outline-secondary btn-sm">Edit Profile</button></a>
+                        <a href="/delete/{{current_user.id}}"><button type="button"
+                                class="btn my-3 btn-danger btn-sm">Delete</button></a>
+                    </div>
+
+                    <div class="col-4">
+                        <img src="{{ url_for('static', filename='images/default_profile_pic.png') }}" alt="Propic"
+                            width="200px" align="right">
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <br>
+    <div class="card">
+        <h4 class="card-header">User Profile</h4>
+        <div class="card-body">
+
+            <form class="my-4" action="/user/dashboard" method="POST" enctype="multipart/form-data">
+
+                {{form.hidden_tag()}}
+
+                {{form.name.label(for="exampleInputEmail1")}}
+                {{form.name(class="form-control", value=name_to_update.name)}}
+                <br />
+                <div class="row g-3">
+                    <div class="col">
+                        {{form.username.label(for="exampleInputEmail1")}}
+                        {{form.username(class="form-control", value=name_to_update.username)}}
+                    </div>
+                    <div class="col">
+                        {{form.email.label(for="exampleInputEmail1")}}
+                        {{form.email(class="form-control", value=name_to_update.email)}}
+                    </div>
+                </div>
+                <br />
+
+                <div class="row g-3">
+                    <div class="col">
+                        {{form.favorite_color.label()}}
+                        {{form.favorite_color(class="form-control", value=name_to_update.favorite_color)}}
+                    </div>
+                    <div class="col">
+                        {{form.user_profile_pic.label()}}
+                        {{form.user_profile_pic(class="form-control", value=name_to_update.user_profile_pic)}}
+                    </div>
+                </div>
+                <br />
+
+                {{form.about_user.label(for="exampleInputEmail1")}}
+                <textarea name="about_user" class="form-control" rows="5">{{name_to_update.about_user}}</textarea>
+
+                <br />
+                {{form.update(class="btn btn-secondary btn-sm" )}}
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block TITLE %} Update Post {% endblock TITLE %}
+
+{% block content %}
+
+<div class="shadow p-3 mb-5 bg-body rounded">
+    <form class="my-4" method="POST">
+
+        {{form.hidden_tag()}}
+
+        {{form.title.label()}}
+        {{form.title(class="form-control")}}
+        <br />
+        {{form.slug.label()}}
+        {{form.slug(class="form-control")}}
+        <br />
+        {{form.content.label()}}
+        {{form.content(class="form-control", rows= '5')}}
+        <br />
+        {{form.submit(class="btn btn-secondary")}}
+
+    </form>
+    {{ ckeditor.load() }}
+    {{ ckeditor.config(name='content') }} 
+</div>
+
+
+
+</div>
+
+
+{% endblock content %}a

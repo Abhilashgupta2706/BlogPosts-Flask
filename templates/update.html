@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block TITLE %} Update User {% endblock TITLE %}
+
+{% block content %}
+
+{% if id == current_user.id %}
+
+
+<h1 class="my-4">Update User:</h1>
+
+<div class="shadow p-3 mb-5 bg-body rounded">
+    <form class="my-4" action="/update/{{name_to_update.id}}" method="POST">
+
+        {{form.hidden_tag()}}
+
+        {{form.name.label(for="exampleInputEmail1")}}
+        {{form.name(class="form-control", value=name_to_update.name)}}
+        <br />
+        <div class="row g-3">
+            <div class="col">
+                {{form.username.label(for="exampleInputEmail1")}}
+                {{form.username(class="form-control", value=name_to_update.username)}}
+            </div>
+            <div class="col">
+                {{form.email.label(for="exampleInputEmail1")}}
+                {{form.email(class="form-control", value=name_to_update.email)}}
+            </div>
+        </div>
+
+        <br />
+        {{form.favorite_color.label(for="exampleInputEmail1")}}
+        {{form.favorite_color(class="form-control", value=name_to_update.favorite_color)}}
+        <br />
+        {{form.update(class="btn btn-secondary")}}
+        <a href="/delete/{{id}}"><button type="button" class="btn btn-danger">Delete</button>
+
+    </form>
+</div>
+
+{% else %}
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    Access Denied! You Can't Edit This User.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<Center>
+    <h1>403 Forbidden</h1>
+    <p>Cannot access this page..</p>
+    <a href="{{ url_for('dashboard') }}"><button type="button" class="btn my-3 btn-secondary btn-sm">Dashboard</button></a>
+</Center>
+
+
+{% endif %}
+
+
+{% endblock content %}

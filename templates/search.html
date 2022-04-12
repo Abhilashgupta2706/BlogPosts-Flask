@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block TITLE %} Search Results {% endblock TITLE %}
+
+{% block content %}
+
+<br />
+<Center>
+    <h3>Showing search result for: <i><small>{{search}}</small></i></h3>
+</Center>
+<br />
+
+{% if posts %}
+
+<section id="gallery"> 
+    <div class="container">
+        <div class="row">
+            {% for post in posts %}
+
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <img src="https://images.unsplash.com/photo-1477862096227-3a1bb3b08330?ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=60"
+                        alt="" class="card-img-top">
+                    <div class="card-body">
+                        <h3 class="card-title">{{post.title}}</h3>
+                        <h5 class="card-title"><i><small>By: {{post.poster.name}}</small></i></h5>
+                        <p class="card-text">{{post.content|safe}}</p>
+
+                        {% if post.poster_id == current_user.id %}
+                        <a href="/blog-posts/{{post.id}}" class="btn btn-outline-success btn-sm">View Post</a>
+                        <a href="/blog_posts/delete/{{post.id}}" class="btn btn-outline-danger btn-sm">Delete</a>
+                        {% else %}
+                        <a href="/blog-posts/{{post.id}}" class="btn btn-outline-success btn-sm">View Post</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% else %}
+
+<Center>
+    <p>No result found for <strong>{{search}}</strong></p>
+</Center>
+ 
+{% endif %}
+
+{% endblock content %}

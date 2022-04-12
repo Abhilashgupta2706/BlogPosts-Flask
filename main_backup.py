@@ -199,27 +199,22 @@ def update_user(id):
 @app.route('/delete/<int:id>', methods=["GET", "POST"])
 @login_required
 def delete_user(id):
-    if id == current_user.id:
-        user_to_delete = Users.query.get_or_404(id)
+    user_to_delete = Users.query.get_or_404(id)
+    try:
+        db.session.delete(user_to_delete)
+        db.session.commit()
 
+        form = UserForm()
+        name, email = None, None
+        our_users = Users.query.order_by(Users.dateTime)
 
-        try:
-            db.session.delete(user_to_delete)
-            db.session.commit()
+        flash("User deleted successfully.")
+        return render_template('add_user.html', form=form, name=name, our_users=our_users)
 
-            form = UserForm()
-            name, email = None, None
-            our_users = Users.query.order_by(Users.dateTime)
+    except:
+        flash("Error while deleting user! Try again..")
+        return render_template('add_user.html', form=form, name=name, our_users=our_users)
 
-            flash("User deleted successfully.")
-            return render_template('add_user.html', form=form, name=name, our_users=our_users)
-
-        except:
-            flash("Error while deleting user! Try again..")
-            return render_template('add_user.html', form=form, name=name, our_users=our_users)
-    else:
-        flash("Access Denied! Cannot delete other User's Profile")
-        return redirect(url_for('dashboard'))
 
 @app.route('/blog-posts')
 def blog_posts():
