@@ -43,7 +43,7 @@ def load_user(user_id):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect(url_for('blog_posts'))
 
 
 @app.route('/admin')
@@ -282,7 +282,7 @@ def blog_post_update(id):
         flash("Blog has been updated.")
         return redirect(url_for('blog_posts_id', id=post_to_update.id))
 
-    if current_user.id == post_to_update.poster_id or current_user.id  == 1:
+    if current_user.id == post_to_update.poster_id or current_user.id == 1:
 
         form.title.data = post_to_update.title
         # form.author.data = post_to_update.author
@@ -321,20 +321,6 @@ def delete_bog_post(id):
         posts = BlogPosts.query.order_by(BlogPosts.date_posted)
         flash("Access Denied! Cannot delete other user's Blog Posts.")
         return render_template('blog_posts.html', posts=posts)
-
-
-@app.route('/name', methods=["GET", "POST"])
-def name():
-    name = None
-    form = NamerForm()
-
-    # Validation
-    if form.validate_on_submit():
-        name = form.name.data
-        form.name.data = ''
-        flash("Form submitted successfully.")
-
-    return render_template('name.html', name=name, form=form)
 
 
 @app.errorhandler(404)
